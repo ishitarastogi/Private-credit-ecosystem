@@ -1,25 +1,31 @@
-import Link from "next/link";
 import type { Project } from "@/data/projects";
-import { formatList } from "@/lib/utils";
 
 type ProjectCardProps = {
   project: Project;
+  isSelected: boolean;
+  onSelect: (projectId: string) => void;
 };
 
-export function ProjectCard({ project }: ProjectCardProps) {
+export function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps) {
   return (
-    <Link
-      href={`/database/${project.id}`}
-      className="group flex min-h-28 w-full max-w-56 flex-col justify-between rounded-md border border-line bg-background p-4 transition-colors hover:border-accent"
+    <button
+      type="button"
+      onClick={() => onSelect(project.id)}
+      aria-pressed={isSelected}
+      className={`flex w-28 flex-col items-center gap-2 rounded-md border px-3 py-4 text-center transition-colors ${
+        isSelected
+          ? "border-accent bg-accent/[0.06]"
+          : "border-line bg-background hover:border-accent/50"
+      }`}
     >
-      <div>
-        <div className="flex items-center justify-between gap-3">
-          <h3 className="text-sm font-semibold text-foreground">{project.name}</h3>
-          <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
-        </div>
-        <p className="mt-2 text-xs leading-5 text-muted">{project.category}</p>
-      </div>
-      <p className="mt-4 text-xs text-zinc-500">{formatList(project.chains)}</p>
-    </Link>
+      <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-md border border-line bg-white">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={project.logo} alt="" width={22} height={22} />
+      </span>
+      <span className="text-xs font-medium leading-tight text-foreground">
+        {project.name}
+      </span>
+      <span className="text-[10px] leading-tight text-muted">{project.layer}</span>
+    </button>
   );
 }

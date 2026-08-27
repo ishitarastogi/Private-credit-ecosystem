@@ -44,6 +44,7 @@ export interface Project {
   id: string;
   name: string;
   description: string;
+  logo: string;
   layer: EcosystemLayerName;
   category: string;
   status: ProjectStatus;
@@ -58,6 +59,7 @@ export const projects: Project[] = [
     name: "Apollo",
     description:
       "Asset manager represented in the mock dataset as a private credit fund issuer and manager.",
+    logo: "/logos/apollo.svg",
     layer: "Fund Issuer / Manager",
     category: "Alternative asset manager",
     status: "Live",
@@ -70,6 +72,7 @@ export const projects: Project[] = [
     name: "Midas",
     description:
       "Tokenized product issuer included as a placeholder for yield-bearing credit and cash-management products.",
+    logo: "/logos/midas.svg",
     layer: "Tokenization Platform",
     category: "Tokenized asset platform",
     status: "Live",
@@ -81,6 +84,7 @@ export const projects: Project[] = [
     name: "Securitize",
     description:
       "Tokenization platform represented in the mock stack as issuance and transfer infrastructure.",
+    logo: "/logos/securitize.svg",
     layer: "Tokenization Platform",
     category: "Tokenization and transfer agent",
     status: "Live",
@@ -93,6 +97,7 @@ export const projects: Project[] = [
     name: "Maple",
     description:
       "Credit protocol placeholder for onchain institutional lending pools and borrower markets.",
+    logo: "/logos/maple.svg",
     layer: "Credit Protocol",
     category: "Credit marketplace",
     status: "Live",
@@ -105,6 +110,7 @@ export const projects: Project[] = [
     name: "Nest",
     description:
       "Wrapper and venue layer placeholder for packaging tokenized credit exposure for end users.",
+    logo: "/logos/nest.svg",
     layer: "Wrapper / Venue",
     category: "Credit wrapper",
     status: "Pilot",
@@ -116,6 +122,7 @@ export const projects: Project[] = [
     name: "R25",
     description:
       "Originator and structuring placeholder for real-world credit exposure in the ecosystem map.",
+    logo: "/logos/r25.svg",
     layer: "Originator",
     category: "Credit originator",
     status: "Research",
@@ -127,6 +134,7 @@ export const projects: Project[] = [
     name: "Hamilton Lane",
     description:
       "Private markets manager represented as a fund issuer and allocator in the mock credit stack.",
+    logo: "/logos/hamilton-lane.svg",
     layer: "Fund Issuer / Manager",
     category: "Private markets manager",
     status: "Live",
@@ -139,6 +147,7 @@ export const projects: Project[] = [
     name: "Fasanara",
     description:
       "Credit manager placeholder for private debt strategies and marketplace lending exposure.",
+    logo: "/logos/fasanara.svg",
     layer: "Fund Issuer / Manager",
     category: "Credit manager",
     status: "Live",
@@ -150,6 +159,7 @@ export const projects: Project[] = [
     name: "Clearpool",
     description:
       "Credit protocol placeholder for lending pools, borrower credit markets, and liquidity venues.",
+    logo: "/logos/clearpool.svg",
     layer: "Credit Protocol",
     category: "Credit marketplace",
     status: "Live",
@@ -162,6 +172,7 @@ export const projects: Project[] = [
     name: "Figure",
     description:
       "Originator placeholder for consumer and asset-backed credit flowing into tokenized markets.",
+    logo: "/logos/figure.svg",
     layer: "Originator",
     category: "Credit originator",
     status: "Live",
