@@ -1,15 +1,14 @@
-import Link from "next/link";
 import type { Asset } from "@/data/assets";
 import type { LayerMeta, Project } from "@/data/projects";
-import { formatUsd } from "@/lib/utils";
 
 type DatabaseTableProps = {
   assets: readonly Asset[];
   projects: readonly Project[];
   layers: readonly LayerMeta[];
+  onSelectProject: (projectId: string) => void;
 };
 
-export function DatabaseTable({ assets, projects, layers }: DatabaseTableProps) {
+export function DatabaseTable({ assets, projects, layers, onSelectProject }: DatabaseTableProps) {
   const projectById = new Map(projects.map((project) => [project.id, project]));
   const layerByKey = new Map(layers.map((layer) => [layer.key, layer]));
 
@@ -24,7 +23,6 @@ export function DatabaseTable({ assets, projects, layers }: DatabaseTableProps) 
             <th className="px-4 py-3 font-semibold">Layer</th>
             <th className="px-4 py-3 font-semibold">Asset Class</th>
             <th className="px-4 py-3 font-semibold">Access</th>
-            <th className="px-4 py-3 font-semibold">Size</th>
             <th className="px-4 py-3 font-semibold">Status</th>
           </tr>
         </thead>
@@ -32,7 +30,6 @@ export function DatabaseTable({ assets, projects, layers }: DatabaseTableProps) 
           {assets.map((asset) => {
             const project = projectById.get(asset.projectId);
             const layer = layerByKey.get(asset.layer);
-            const size = formatUsd(asset.sizeUsd);
 
             return (
               <tr
@@ -40,12 +37,13 @@ export function DatabaseTable({ assets, projects, layers }: DatabaseTableProps) 
                 className="border-b border-line align-top last:border-b-0"
               >
                 <td className="px-4 py-3">
-                  <Link
-                    href={`/database/${asset.projectId}`}
+                  <button
+                    type="button"
+                    onClick={() => onSelectProject(asset.projectId)}
                     className="font-medium text-foreground underline-offset-4 hover:text-accent hover:underline"
                   >
                     {project?.name ?? asset.projectId}
-                  </Link>
+                  </button>
                 </td>
                 <td className="px-4 py-3 text-muted">{asset.name}</td>
                 <td className="px-4 py-3 text-muted">{asset.ticker ?? "—"}</td>
@@ -58,14 +56,13 @@ export function DatabaseTable({ assets, projects, layers }: DatabaseTableProps) 
                 <td className="px-4 py-3 text-muted">
                   {asset.accessModel ?? "—"}
                 </td>
-                <td className="px-4 py-3 text-muted">{size ?? "—"}</td>
                 <td className="px-4 py-3 text-muted">{asset.status ?? "—"}</td>
               </tr>
             );
           })}
           {assets.length === 0 && (
             <tr>
-              <td colSpan={8} className="px-4 py-10 text-center text-sm text-muted">
+              <td colSpan={7} className="px-4 py-10 text-center text-sm text-muted">
                 No records match the current filters.
               </td>
             </tr>

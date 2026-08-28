@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { ProjectLogo } from "@/components/ecosystem/ProjectLogo";
 import type { Asset } from "@/data/assets";
-import type { LayerMeta, Project } from "@/data/projects";
-import { formatUsd } from "@/lib/utils";
+import type { LayerKey, LayerMeta, Project } from "@/data/projects";
+import { xHandleFromUrl } from "@/lib/utils";
 
 type ProjectDrawerProps = {
   assets: readonly Asset[];
@@ -27,6 +27,15 @@ export function ProjectDrawer({ assets, layers, project, onClose }: ProjectDrawe
     ? project.roles.filter((role) => role !== project.primaryLayer)
     : [];
 
+  const layerName = (key: LayerKey) => layerByKey.get(key)?.name ?? key;
+
+  // Only shown when every product agrees — a mixed-status project has no
+  // single true answer, so it's left to the per-product cards instead.
+  const statusValues = new Set(
+    projectAssets.map((asset) => asset.status).filter(Boolean),
+  );
+  const uniformStatus = statusValues.size === 1 ? [...statusValues][0] : undefined;
+
   return (
     <>
       <div
@@ -39,125 +48,140 @@ export function ProjectDrawer({ assets, layers, project, onClose }: ProjectDrawe
       <aside
         aria-label="Project details"
         aria-hidden={!isOpen}
-        className={`fixed inset-y-0 right-0 z-40 w-full max-w-sm border-l border-line bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.02)] transition-transform duration-300 ease-out ${
+        className={`fixed inset-y-0 right-0 z-40 flex h-full w-full flex-col border-l border-line bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.02)] transition-transform duration-300 ease-out sm:max-w-[420px] ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         {project ? (
-          <div className="flex h-full flex-col overflow-y-auto px-6 py-6">
-            <div className="flex items-start justify-between">
-              <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-md border border-line bg-background">
-                <ProjectLogo name={project.name} logo={project.logo} size={26} />
-              </span>
+          <>
+            <div className="flex shrink-0 items-start justify-between gap-3 border-b border-line px-5 py-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-md border border-line bg-background">
+                  <ProjectLogo name={project.name} logo={project.logo} size={20} />
+                </span>
+                <div className="min-w-0">
+                  <h2 className="truncate text-base font-semibold text-foreground">
+                    {project.name}
+                  </h2>
+                  <p className="mt-0.5 text-[10px] font-semibold uppercase tracking-[0.1em] text-accent">
+                    {layerName(project.primaryLayer)}
+                  </p>
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="Close project details"
-                className="text-lg leading-none text-muted transition-colors hover:text-foreground"
+                className="shrink-0 text-lg leading-none text-muted transition-colors hover:text-foreground"
               >
                 ×
               </button>
             </div>
 
-            <h2 className="mt-4 text-xl font-semibold text-foreground">
-              {project.name}
-            </h2>
-            <p className="mt-1 text-xs">
-              <span className="uppercase tracking-[0.1em] text-accent">
-                {layerByKey.get(project.primaryLayer)?.name ?? project.primaryLayer}
-              </span>
-              {otherRoles.length > 0 && (
-                <span className="text-muted">
-                  {" "}
-                  + {otherRoles
-                    .map((role) => layerByKey.get(role)?.name ?? role)
-                    .join(", ")}
-                </span>
-              )}
-            </p>
+            <div className="flex-1 overflow-y-auto">
+              <div className="divide-y divide-line">
+                {project.description && (
+                  <section className="px-5 py-5">
+                    <SectionLabel>About</SectionLabel>
+                    <p className="mt-1.5 text-sm leading-5 text-muted">
+                      {project.description}
+                    </p>
+                  </section>
+                )}
 
-            <div className="mt-6 border-t border-line pt-6">
-              <SectionLabel>About</SectionLabel>
-              <p className="mt-2 text-sm leading-6 text-muted">
-                {project.description ??
-                  "No description available in the source dataset."}
-              </p>
-            </div>
-
-            <div className="mt-6 border-t border-line pt-6">
-              <SectionLabel>
-                {`Products / Assets (${projectAssets.length})`}
-              </SectionLabel>
-              <div className="mt-3 space-y-3">
-                {projectAssets.length > 0 ? (
-                  projectAssets.map((asset) => (
-                    <div
-                      key={asset.id}
-                      className="rounded-md border border-line px-3 py-2.5"
-                    >
-                      <div className="flex flex-wrap items-baseline justify-between gap-x-2">
-                        <p className="text-sm font-medium text-foreground">
-                          {asset.name}
-                        </p>
-                        {asset.ticker && (
-                          <p className="text-xs text-muted">{asset.ticker}</p>
-                        )}
-                      </div>
-                      <p className="mt-1 text-xs text-muted">
-                        {[asset.assetClass, asset.accessModel, asset.status]
-                          .filter(Boolean)
-                          .join(" · ") || "—"}
-                      </p>
-                      {(asset.platform || asset.issuerLegalEntity) && (
-                        <p className="mt-1 text-[11px] leading-4 text-zinc-500">
-                          {[
-                            asset.platform && `Platform: ${asset.platform}`,
-                            asset.issuerLegalEntity &&
-                              `Issuer: ${asset.issuerLegalEntity}`,
-                          ]
-                            .filter(Boolean)
-                            .join(" · ")}
-                        </p>
+                {(project.website || project.twitter) && (
+                  <section className="px-5 py-5">
+                    <div className="flex gap-2">
+                      {project.website && (
+                        <a
+                          href={project.website}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex-1 rounded-md border border-line px-3 py-2 text-center text-xs font-medium text-foreground transition-colors hover:border-accent"
+                        >
+                          Visit website ↗
+                        </a>
                       )}
-                      {asset.sizeUsd !== undefined && (
-                        <p className="mt-1 text-[11px] text-zinc-500">
-                          Size: {formatUsd(asset.sizeUsd)}
-                        </p>
-                      )}
-                      {asset.notes && (
-                        <p className="mt-1.5 text-[11px] italic leading-4 text-muted">
-                          {asset.notes}
-                        </p>
+                      {project.twitter && (
+                        <a
+                          href={project.twitter}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="flex-1 rounded-md border border-line px-3 py-2 text-center text-xs font-medium text-foreground transition-colors hover:border-accent"
+                        >
+                          {xHandleFromUrl(project.twitter)} ↗
+                        </a>
                       )}
                     </div>
-                  ))
-                ) : (
-                  <p className="text-sm text-muted">
-                    No products recorded for this project.
-                  </p>
+                  </section>
                 )}
+
+                <section className="px-5 py-5">
+                  <SectionLabel>Role</SectionLabel>
+                  <p className="mt-1.5 text-sm text-foreground">
+                    {layerName(project.primaryLayer)}
+                    {otherRoles.length > 0 &&
+                      ` + ${otherRoles.map((role) => layerName(role)).join(", ")}`}
+                  </p>
+                </section>
+
+                {uniformStatus && (
+                  <section className="px-5 py-5">
+                    <SectionLabel>Status</SectionLabel>
+                    <p className="mt-1.5 text-sm text-foreground">{uniformStatus}</p>
+                  </section>
+                )}
+
+                {project.chain && (
+                  <section className="px-5 py-5">
+                    <SectionLabel>Chain</SectionLabel>
+                    <p className="mt-1.5 text-sm text-foreground">{project.chain}</p>
+                  </section>
+                )}
+
+                <section className="px-5 py-5">
+                  <SectionLabel>
+                    {projectAssets.length === 1 ? "Product" : "Products"}
+                  </SectionLabel>
+                  <div className="mt-2 space-y-2">
+                    {projectAssets.length > 0 ? (
+                      projectAssets.map((asset) => (
+                        <div
+                          key={asset.id}
+                          className="rounded-md border border-line px-3 py-2"
+                        >
+                          <p className="text-sm font-medium text-foreground">
+                            {asset.name}
+                          </p>
+                          {asset.ticker && (
+                            <p className="mt-0.5 text-xs text-muted">{asset.ticker}</p>
+                          )}
+                          {asset.assetClass && (
+                            <p className="mt-0.5 text-xs text-muted">
+                              {asset.assetClass}
+                            </p>
+                          )}
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-muted">
+                        No products recorded for this project.
+                      </p>
+                    )}
+                  </div>
+                </section>
               </div>
             </div>
 
-            <div className="mt-6 flex flex-col gap-2 border-t border-line pt-6">
-              {project.website && (
-                <a
-                  href={project.website}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-md border border-line px-3 py-2 text-center text-sm font-medium text-foreground transition-colors hover:border-accent"
-                >
-                  Visit website ↗
-                </a>
-              )}
+            <div className="shrink-0 border-t border-line px-5 py-4">
               <Link
                 href={`/database/${project.id}`}
-                className="rounded-md bg-foreground px-3 py-2 text-center text-sm font-medium text-background transition-opacity hover:opacity-90"
+                className="block rounded-md bg-foreground px-3 py-2 text-center text-sm font-medium text-background transition-opacity hover:opacity-90"
               >
                 View in database →
               </Link>
             </div>
-          </div>
+          </>
         ) : null}
       </aside>
     </>

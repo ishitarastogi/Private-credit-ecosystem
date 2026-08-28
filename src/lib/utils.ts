@@ -19,6 +19,11 @@ export function slugify(text: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+export function xHandleFromUrl(url: string) {
+  const match = url.match(/x\.com\/([^/?#]+)/i);
+  return match ? `@${match[1]}` : url;
+}
+
 export function formatUsd(value: number | undefined) {
   if (value === undefined) return undefined;
   if (value >= 1_000_000_000) return `$${(value / 1_000_000_000).toFixed(2)}B`;

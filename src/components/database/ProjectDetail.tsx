@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Asset } from "@/data/assets";
 import type { LayerMeta, Project } from "@/data/projects";
-import { formatUsd } from "@/lib/utils";
 
 type ProjectDetailProps = {
   assets: readonly Asset[];
@@ -67,7 +66,6 @@ export function ProjectDetail({ assets, layers, project }: ProjectDetailProps) {
                   <DetailItem label="Platform" value={asset.platform} />
                   <DetailItem label="Access Model" value={asset.accessModel} />
                   <DetailItem label="Status" value={asset.status} />
-                  <DetailItem label="Size" value={formatUsd(asset.sizeUsd)} />
                 </dl>
                 {asset.notes && (
                   <p className="mt-3 text-xs italic leading-5 text-muted">
