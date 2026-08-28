@@ -1,182 +1,73 @@
-export const ecosystemLayers = [
-  {
-    key: "originator",
-    name: "Originator",
-    description: "Borrower-facing sources of private credit collateral.",
-  },
-  {
-    key: "tokenization-platform",
-    name: "Tokenization Platform",
-    description: "Rails for issuing and administering tokenized credit assets.",
-  },
-  {
-    key: "fund-issuer-manager",
-    name: "Fund Issuer / Manager",
-    description: "Managers, issuers, and allocators of credit strategies.",
-  },
-  {
-    key: "slicer",
-    name: "Slicer",
-    description: "Structuring layers for packaging or segmenting exposure.",
-  },
-  {
-    key: "credit-protocol",
-    name: "Credit Protocol",
-    description: "Onchain lending protocols and market infrastructure.",
-  },
-  {
-    key: "wrapper-venue",
-    name: "Wrapper / Venue",
-    description: "Interfaces, wrappers, and distribution surfaces.",
-  },
-  {
-    key: "helper-infrastructure",
-    name: "Helper / Infrastructure",
-    description: "Research, data, custody, oracle, and service layers.",
-  },
-] as const;
+import {
+  datasetRows,
+  ecosystemLayers,
+  layerKeys,
+  type LayerKey,
+  type LayerMeta,
+} from "@/data/privateCreditDataset";
+import { assets } from "@/data/assets";
+import { slugify } from "@/lib/utils";
 
-export type EcosystemLayerMeta = (typeof ecosystemLayers)[number];
-export type EcosystemLayerName = EcosystemLayerMeta["name"];
-export type ProjectStatus = "Live" | "Pilot" | "Research";
+export { ecosystemLayers, layerKeys };
+export type { LayerKey, LayerMeta };
 
 export interface Project {
   id: string;
   name: string;
-  description: string;
-  logo: string;
-  layer: EcosystemLayerName;
-  category: string;
-  status: ProjectStatus;
-  chains: string[];
-  assets: string[];
+  primaryLayer: LayerKey;
+  roles: LayerKey[];
+  description?: string;
+  logo?: string;
   website?: string;
+  assetIds: string[];
 }
 
-export const projects: Project[] = [
-  {
-    id: "apollo",
-    name: "Apollo",
-    description:
-      "Asset manager represented in the mock dataset as a private credit fund issuer and manager.",
-    logo: "/logos/apollo.svg",
-    layer: "Fund Issuer / Manager",
-    category: "Alternative asset manager",
-    status: "Live",
-    chains: ["Ethereum", "Polygon"],
-    assets: ["acrdx"],
-    website: "https://www.apollo.com",
-  },
-  {
-    id: "midas",
-    name: "Midas",
-    description:
-      "Tokenized product issuer included as a placeholder for yield-bearing credit and cash-management products.",
-    logo: "/logos/midas.svg",
-    layer: "Tokenization Platform",
-    category: "Tokenized asset platform",
-    status: "Live",
-    chains: ["Ethereum"],
-    assets: ["mtbill"],
-  },
-  {
-    id: "securitize",
-    name: "Securitize",
-    description:
-      "Tokenization platform represented in the mock stack as issuance and transfer infrastructure.",
-    logo: "/logos/securitize.svg",
-    layer: "Tokenization Platform",
-    category: "Tokenization and transfer agent",
-    status: "Live",
-    chains: ["Ethereum", "Avalanche", "Polygon"],
-    assets: ["acrdx"],
-    website: "https://securitize.io",
-  },
-  {
-    id: "maple",
-    name: "Maple",
-    description:
-      "Credit protocol placeholder for onchain institutional lending pools and borrower markets.",
-    logo: "/logos/maple.svg",
-    layer: "Credit Protocol",
-    category: "Credit marketplace",
-    status: "Live",
-    chains: ["Ethereum", "Solana"],
-    assets: ["maple-direct"],
-    website: "https://maple.finance",
-  },
-  {
-    id: "nest",
-    name: "Nest",
-    description:
-      "Wrapper and venue layer placeholder for packaging tokenized credit exposure for end users.",
-    logo: "/logos/nest.svg",
-    layer: "Wrapper / Venue",
-    category: "Credit wrapper",
-    status: "Pilot",
-    chains: ["Ethereum"],
-    assets: ["nacrdx"],
-  },
-  {
-    id: "r25",
-    name: "R25",
-    description:
-      "Originator and structuring placeholder for real-world credit exposure in the ecosystem map.",
-    logo: "/logos/r25.svg",
-    layer: "Originator",
-    category: "Credit originator",
-    status: "Research",
-    chains: ["Ethereum"],
-    assets: ["r25-credit"],
-  },
-  {
-    id: "hamilton-lane",
-    name: "Hamilton Lane",
-    description:
-      "Private markets manager represented as a fund issuer and allocator in the mock credit stack.",
-    logo: "/logos/hamilton-lane.svg",
-    layer: "Fund Issuer / Manager",
-    category: "Private markets manager",
-    status: "Live",
-    chains: ["Polygon"],
-    assets: ["hlscope"],
-    website: "https://www.hamiltonlane.com",
-  },
-  {
-    id: "fasanara",
-    name: "Fasanara",
-    description:
-      "Credit manager placeholder for private debt strategies and marketplace lending exposure.",
-    logo: "/logos/fasanara.svg",
-    layer: "Fund Issuer / Manager",
-    category: "Credit manager",
-    status: "Live",
-    chains: ["Ethereum"],
-    assets: ["fasanara-pool"],
-  },
-  {
-    id: "clearpool",
-    name: "Clearpool",
-    description:
-      "Credit protocol placeholder for lending pools, borrower credit markets, and liquidity venues.",
-    logo: "/logos/clearpool.svg",
-    layer: "Credit Protocol",
-    category: "Credit marketplace",
-    status: "Live",
-    chains: ["Ethereum", "Polygon"],
-    assets: ["clearpool-credit"],
-    website: "https://clearpool.finance",
-  },
-  {
-    id: "figure",
-    name: "Figure",
-    description:
-      "Originator placeholder for consumer and asset-backed credit flowing into tokenized markets.",
-    logo: "/logos/figure.svg",
-    layer: "Originator",
-    category: "Credit originator",
-    status: "Live",
-    chains: ["Provenance"],
-    assets: ["figure-heloc"],
-  },
-];
+// Reuse existing logo assets only where the id already matches an available
+// file under public/logos/. Everything else stays undefined — no invented logos.
+const existingLogos: Partial<Record<string, string>> = {
+  apollo: "/logos/apollo.svg",
+  midas: "/logos/midas.svg",
+  securitize: "/logos/securitize.svg",
+  "maple-finance": "/logos/maple.svg",
+  "nest-credit": "/logos/nest.svg",
+  r25: "/logos/r25.svg",
+  "hamilton-lane": "/logos/hamilton-lane.svg",
+  fasanara: "/logos/fasanara.svg",
+  clearpool: "/logos/clearpool.svg",
+  figure: "/logos/figure.svg",
+};
+
+function buildProjects(): Project[] {
+  const order: string[] = [];
+  const byId = new Map<string, Project>();
+
+  for (const row of datasetRows) {
+    const id = slugify(row.project);
+    const existing = byId.get(id);
+
+    if (!existing) {
+      order.push(id);
+      byId.set(id, {
+        id,
+        name: row.project,
+        primaryLayer: row.layerKey,
+        roles: [row.layerKey],
+        logo: existingLogos[id],
+        assetIds: [],
+      });
+      continue;
+    }
+
+    if (!existing.roles.includes(row.layerKey)) {
+      existing.roles.push(row.layerKey);
+    }
+  }
+
+  for (const asset of assets) {
+    byId.get(asset.projectId)?.assetIds.push(asset.id);
+  }
+
+  return order.map((id) => byId.get(id)!);
+}
+
+export const projects: Project[] = buildProjects();

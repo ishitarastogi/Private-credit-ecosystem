@@ -1,3 +1,4 @@
+import { ProjectLogo } from "@/components/ecosystem/ProjectLogo";
 import type { Project } from "@/data/projects";
 
 type ProjectCardProps = {
@@ -7,6 +8,8 @@ type ProjectCardProps = {
 };
 
 export function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps) {
+  const productCount = project.assetIds.length;
+
   return (
     <button
       type="button"
@@ -19,13 +22,14 @@ export function ProjectCard({ project, isSelected, onSelect }: ProjectCardProps)
       }`}
     >
       <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-md border border-line bg-white">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={project.logo} alt="" width={22} height={22} />
+        <ProjectLogo name={project.name} logo={project.logo} />
       </span>
       <span className="text-xs font-medium leading-tight text-foreground">
         {project.name}
       </span>
-      <span className="text-[10px] leading-tight text-muted">{project.layer}</span>
+      <span className="text-[10px] leading-tight text-muted">
+        {productCount} {productCount === 1 ? "product" : "products"}
+      </span>
     </button>
   );
 }

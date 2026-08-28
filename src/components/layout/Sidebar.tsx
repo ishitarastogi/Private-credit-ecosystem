@@ -30,11 +30,14 @@ export function Sidebar() {
     <>
       <aside className="fixed inset-y-0 left-0 z-20 hidden w-60 flex-col border-r border-line bg-background lg:flex">
         <div className="px-5 pt-6 pb-5">
-          <Link href="/ecosystem" className="text-sm font-semibold text-foreground">
+          <Link
+            href="/ecosystem"
+            className="text-sm font-semibold uppercase tracking-[0.06em] text-foreground"
+          >
             Private Credit<span className="text-accent">.Map</span>
           </Link>
           <p className="mt-1.5 text-[11px] uppercase tracking-[0.14em] text-muted">
-            v1 · structure
+            v1 · ecosystem
           </p>
         </div>
 
@@ -74,7 +77,10 @@ export function Sidebar() {
       </aside>
 
       <header className="flex items-center justify-between border-b border-line bg-background px-4 py-3 lg:hidden">
-        <Link href="/ecosystem" className="text-sm font-semibold text-foreground">
+        <Link
+          href="/ecosystem"
+          className="text-sm font-semibold uppercase tracking-[0.06em] text-foreground"
+        >
           Private Credit<span className="text-accent">.Map</span>
         </Link>
         <nav aria-label="Primary" className="flex items-center gap-1">

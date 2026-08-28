@@ -1,9 +1,9 @@
 import { ProjectCard } from "@/components/ecosystem/ProjectCard";
-import type { EcosystemLayerMeta, Project } from "@/data/projects";
+import type { LayerMeta, Project } from "@/data/projects";
 
 type EcosystemLayerProps = {
   index: number;
-  layer: EcosystemLayerMeta;
+  layer: LayerMeta;
   projects: readonly Project[];
   selectedProjectId: string | null;
   onSelectProject: (projectId: string) => void;
@@ -42,7 +42,7 @@ export function EcosystemLayer({
           ))
         ) : (
           <p className="text-sm text-zinc-400">
-            No projects in this mock layer yet.
+            No projects recorded in this layer yet.
           </p>
         )}
       </div>

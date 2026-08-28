@@ -1,8 +1,8 @@
 import { EcosystemLayer } from "@/components/ecosystem/EcosystemLayer";
-import type { EcosystemLayerMeta, Project } from "@/data/projects";
+import type { LayerMeta, Project } from "@/data/projects";
 
 type EcosystemMapProps = {
-  layers: readonly EcosystemLayerMeta[];
+  layers: readonly LayerMeta[];
   projects: readonly Project[];
   selectedProjectId: string | null;
   onSelectProject: (projectId: string) => void;
@@ -16,19 +16,19 @@ export function EcosystemMap({
 }: EcosystemMapProps) {
   const projectsByLayer = new Map(
     layers.map((layer) => [
-      layer.name,
-      projects.filter((project) => project.layer === layer.name),
+      layer.key,
+      projects.filter((project) => project.primaryLayer === layer.key),
     ]),
   );
 
   return (
     <section aria-label="Onchain private credit ecosystem layers">
-      {layers.map((layer, index) => (
+      {layers.map((layer) => (
         <EcosystemLayer
           key={layer.key}
-          index={index + 1}
+          index={layer.layerNo}
           layer={layer}
-          projects={projectsByLayer.get(layer.name) ?? []}
+          projects={projectsByLayer.get(layer.key) ?? []}
           selectedProjectId={selectedProjectId}
           onSelectProject={onSelectProject}
         />

@@ -1,90 +1,43 @@
-export type AssetType =
-  | "Credit Pool"
-  | "Tokenized Fund"
-  | "Tokenized Product"
-  | "Wrapped Token"
-  | "Whole Loan";
+import { datasetRows, type DatasetRow, type LayerKey } from "@/data/privateCreditDataset";
+import { slugify } from "@/lib/utils";
 
 export interface Asset {
   id: string;
-  symbol: string;
+  projectId: string;
   name: string;
-  type: AssetType;
-  chains: string[];
-  projectIds: string[];
+  ticker?: string;
+  layer: LayerKey;
+  platform?: string;
+  issuerLegalEntity?: string;
+  accessModel?: string;
+  entryType?: string;
+  assetClass?: string;
+  sizeUsd?: number;
+  sizeMetric?: string;
+  source?: string;
+  status?: string;
+  notes?: string;
 }
 
-export const assets: Asset[] = [
-  {
-    id: "acrdx",
-    symbol: "ACRDX",
-    name: "Apollo diversified credit token placeholder",
-    type: "Tokenized Fund",
-    chains: ["Ethereum", "Polygon"],
-    projectIds: ["apollo", "securitize", "nest"],
-  },
-  {
-    id: "nacrdx",
-    symbol: "nACRDX",
-    name: "Wrapped ACRDX placeholder",
-    type: "Wrapped Token",
-    chains: ["Ethereum"],
-    projectIds: ["nest"],
-  },
-  {
-    id: "mtbill",
-    symbol: "mTBILL",
-    name: "Midas tokenized product placeholder",
-    type: "Tokenized Product",
-    chains: ["Ethereum"],
-    projectIds: ["midas"],
-  },
-  {
-    id: "maple-direct",
-    symbol: "Maple Direct",
-    name: "Institutional direct lending pool placeholder",
-    type: "Credit Pool",
-    chains: ["Ethereum", "Solana"],
-    projectIds: ["maple"],
-  },
-  {
-    id: "hlscope",
-    symbol: "HL Credit",
-    name: "Hamilton Lane credit strategy placeholder",
-    type: "Tokenized Fund",
-    chains: ["Polygon"],
-    projectIds: ["hamilton-lane"],
-  },
-  {
-    id: "fasanara-pool",
-    symbol: "Fasanara Pool",
-    name: "Private debt pool placeholder",
-    type: "Credit Pool",
-    chains: ["Ethereum"],
-    projectIds: ["fasanara"],
-  },
-  {
-    id: "clearpool-credit",
-    symbol: "Clearpool Credit",
-    name: "Borrower pool placeholder",
-    type: "Credit Pool",
-    chains: ["Ethereum", "Polygon"],
-    projectIds: ["clearpool"],
-  },
-  {
-    id: "figure-heloc",
-    symbol: "Figure HELOC",
-    name: "Whole-loan collateral placeholder",
-    type: "Whole Loan",
-    chains: ["Provenance"],
-    projectIds: ["figure"],
-  },
-  {
-    id: "r25-credit",
-    symbol: "R25 Credit",
-    name: "Structured private credit placeholder",
-    type: "Credit Pool",
-    chains: ["Ethereum"],
-    projectIds: ["r25"],
-  },
-];
+function buildAssetId(projectId: string, row: DatasetRow) {
+  return `${projectId}-${slugify(row.ticker ?? row.product)}`;
+}
+
+export const assets: Asset[] = datasetRows.map((row) => {
+  const projectId = slugify(row.project);
+
+  return {
+    id: buildAssetId(projectId, row),
+    projectId,
+    name: row.product,
+    ticker: row.ticker,
+    layer: row.layerKey,
+    platform: row.platform,
+    issuerLegalEntity: row.issuerLegalEntity,
+    accessModel: row.accessModel,
+    assetClass: row.assetClass,
+    sizeUsd: row.sizeUsd,
+    status: row.status,
+    notes: row.notes,
+  };
+});

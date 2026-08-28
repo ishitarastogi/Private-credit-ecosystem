@@ -4,21 +4,18 @@ import { useState } from "react";
 import { EcosystemMap } from "@/components/ecosystem/EcosystemMap";
 import { ProjectDrawer } from "@/components/ecosystem/ProjectDrawer";
 import type { Asset } from "@/data/assets";
-import type { EcosystemLayerMeta, Project } from "@/data/projects";
-import type { Relationship } from "@/data/relationships";
+import type { LayerMeta, Project } from "@/data/projects";
 
 type EcosystemExperienceProps = {
   assets: readonly Asset[];
-  layers: readonly EcosystemLayerMeta[];
+  layers: readonly LayerMeta[];
   projects: readonly Project[];
-  relationships: readonly Relationship[];
 };
 
 export function EcosystemExperience({
   assets,
   layers,
   projects,
-  relationships,
 }: EcosystemExperienceProps) {
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(
     null,
@@ -36,9 +33,8 @@ export function EcosystemExperience({
       />
       <ProjectDrawer
         assets={assets}
+        layers={layers}
         project={selectedProject}
-        projects={projects}
-        relationships={relationships}
         onClose={() => setSelectedProjectId(null)}
       />
     </>

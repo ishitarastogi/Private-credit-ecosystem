@@ -1,12 +1,8 @@
 import { EcosystemExperience } from "@/components/ecosystem/EcosystemExperience";
 import { assets } from "@/data/assets";
 import { ecosystemLayers, projects } from "@/data/projects";
-import { relationships } from "@/data/relationships";
 
 export default function EcosystemPage() {
-  const chainCount = new Set(projects.flatMap((project) => project.chains))
-    .size;
-
   return (
     <div className="mx-auto w-full max-w-6xl px-5 py-10 sm:px-8 lg:px-10">
       <header className="max-w-2xl">
@@ -22,24 +18,9 @@ export default function EcosystemPage() {
         </p>
 
         <dl className="mt-6 flex flex-wrap gap-x-8 gap-y-2">
-          <div className="flex items-baseline gap-1.5">
-            <dt className="text-sm font-semibold text-foreground">
-              {projects.length}
-            </dt>
-            <dd className="text-xs text-muted">tracked projects</dd>
-          </div>
-          <div className="flex items-baseline gap-1.5">
-            <dt className="text-sm font-semibold text-foreground">
-              {ecosystemLayers.length}
-            </dt>
-            <dd className="text-xs text-muted">layers</dd>
-          </div>
-          <div className="flex items-baseline gap-1.5">
-            <dt className="text-sm font-semibold text-foreground">
-              {chainCount}
-            </dt>
-            <dd className="text-xs text-muted">chains</dd>
-          </div>
+          <Stat value={projects.length} label="tracked projects" />
+          <Stat value={ecosystemLayers.length} label="layers" />
+          <Stat value={assets.length} label="tracked products" />
         </dl>
       </header>
 
@@ -48,9 +29,17 @@ export default function EcosystemPage() {
           assets={assets}
           layers={ecosystemLayers}
           projects={projects}
-          relationships={relationships}
         />
       </div>
+    </div>
+  );
+}
+
+function Stat({ value, label }: { value: number; label: string }) {
+  return (
+    <div className="flex items-baseline gap-1.5">
+      <dt className="text-sm font-semibold text-foreground">{value}</dt>
+      <dd className="text-xs text-muted">{label}</dd>
     </div>
   );
 }
