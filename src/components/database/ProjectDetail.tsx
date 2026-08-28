@@ -41,9 +41,11 @@ export function ProjectDetail({ assets, layers, project }: ProjectDetailProps) {
               .join(", ")}
           </p>
         )}
-        <p className="mt-5 max-w-3xl text-base leading-7 text-muted">
-          {project.description ?? "No description available in the source dataset."}
-        </p>
+        {project.description && (
+          <p className="mt-5 max-w-3xl text-base leading-7 text-muted">
+            {project.description}
+          </p>
+        )}
       </header>
 
       <section className="py-8">
@@ -65,7 +67,6 @@ export function ProjectDetail({ assets, layers, project }: ProjectDetailProps) {
                   <DetailItem label="Issuer" value={asset.issuerLegalEntity} />
                   <DetailItem label="Platform" value={asset.platform} />
                   <DetailItem label="Access Model" value={asset.accessModel} />
-                  <DetailItem label="Status" value={asset.status} />
                 </dl>
                 {asset.notes && (
                   <p className="mt-3 text-xs italic leading-5 text-muted">

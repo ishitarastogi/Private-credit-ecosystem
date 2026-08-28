@@ -20,7 +20,6 @@ function uniqueSorted(values: (string | undefined)[]) {
 export function DatabaseExplorer({ assets, projects, layers }: DatabaseExplorerProps) {
   const [search, setSearch] = useState("");
   const [layer, setLayer] = useState("");
-  const [status, setStatus] = useState("");
   const [access, setAccess] = useState("");
   const [assetClass, setAssetClass] = useState("");
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
@@ -32,10 +31,6 @@ export function DatabaseExplorer({ assets, projects, layers }: DatabaseExplorerP
 
   const selectedProject = projectById.get(selectedProjectId ?? "") ?? null;
 
-  const statusOptions = useMemo(
-    () => uniqueSorted(assets.map((asset) => asset.status)),
-    [assets],
-  );
   const accessOptions = useMemo(
     () => uniqueSorted(assets.map((asset) => asset.accessModel)),
     [assets],
@@ -54,7 +49,6 @@ export function DatabaseExplorer({ assets, projects, layers }: DatabaseExplorerP
 
     return assets.filter((asset) => {
       if (layer && asset.layer !== layer) return false;
-      if (status && asset.status !== status) return false;
       if (access && asset.accessModel !== access) return false;
       if (assetClass && asset.assetClass !== assetClass) return false;
 
@@ -67,7 +61,7 @@ export function DatabaseExplorer({ assets, projects, layers }: DatabaseExplorerP
         .toLowerCase();
       return haystack.includes(query);
     });
-  }, [assets, projectById, search, layer, status, access, assetClass]);
+  }, [assets, projectById, search, layer, access, assetClass]);
 
   return (
     <div className="space-y-6">
@@ -77,9 +71,6 @@ export function DatabaseExplorer({ assets, projects, layers }: DatabaseExplorerP
         layerOptions={layerOptions}
         layer={layer}
         onLayerChange={setLayer}
-        statusOptions={statusOptions}
-        status={status}
-        onStatusChange={setStatus}
         accessOptions={accessOptions}
         access={access}
         onAccessChange={setAccess}

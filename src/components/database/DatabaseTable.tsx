@@ -21,9 +21,8 @@ export function DatabaseTable({ assets, projects, layers, onSelectProject }: Dat
             <th className="px-4 py-3 font-semibold">Product / Asset</th>
             <th className="px-4 py-3 font-semibold">Ticker</th>
             <th className="px-4 py-3 font-semibold">Layer</th>
-            <th className="px-4 py-3 font-semibold">Asset Class</th>
             <th className="px-4 py-3 font-semibold">Access</th>
-            <th className="px-4 py-3 font-semibold">Status</th>
+            <th className="px-4 py-3 font-semibold">Asset Class</th>
           </tr>
         </thead>
         <tbody>
@@ -51,18 +50,17 @@ export function DatabaseTable({ assets, projects, layers, onSelectProject }: Dat
                   {layer?.name ?? asset.layer}
                 </td>
                 <td className="px-4 py-3 text-muted">
-                  {asset.assetClass ?? "—"}
-                </td>
-                <td className="px-4 py-3 text-muted">
                   {asset.accessModel ?? "—"}
                 </td>
-                <td className="px-4 py-3 text-muted">{asset.status ?? "—"}</td>
+                <td className="px-4 py-3 text-muted">
+                  {asset.assetClass ?? "—"}
+                </td>
               </tr>
             );
           })}
           {assets.length === 0 && (
             <tr>
-              <td colSpan={7} className="px-4 py-10 text-center text-sm text-muted">
+              <td colSpan={6} className="px-4 py-10 text-center text-sm text-muted">
                 No records match the current filters.
               </td>
             </tr>

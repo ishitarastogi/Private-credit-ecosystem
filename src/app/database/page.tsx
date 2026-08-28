@@ -10,7 +10,7 @@ export default function DatabasePage() {
           Private Credit Database
         </p>
         <h1 className="mt-4 text-3xl font-semibold tracking-normal text-foreground sm:text-4xl">
-          Projects, products, and status across the stack
+          Projects and products across the stack
         </h1>
       </header>
 

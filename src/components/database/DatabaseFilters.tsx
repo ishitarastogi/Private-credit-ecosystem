@@ -6,9 +6,6 @@ type DatabaseFiltersProps = {
   layerOptions: Option[];
   layer: string;
   onLayerChange: (value: string) => void;
-  statusOptions: string[];
-  status: string;
-  onStatusChange: (value: string) => void;
   accessOptions: string[];
   access: string;
   onAccessChange: (value: string) => void;
@@ -23,9 +20,6 @@ export function DatabaseFilters({
   layerOptions,
   layer,
   onLayerChange,
-  statusOptions,
-  status,
-  onStatusChange,
   accessOptions,
   access,
   onAccessChange,
@@ -46,18 +40,12 @@ export function DatabaseFilters({
         className="h-11 w-full rounded-md border border-line bg-white px-4 text-sm text-foreground outline-none transition-colors placeholder:text-zinc-400 focus:border-accent"
       />
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-3">
         <FilterSelect
           label="Layer"
           value={layer}
           onChange={onLayerChange}
           options={layerOptions}
-        />
-        <FilterSelect
-          label="Status"
-          value={status}
-          onChange={onStatusChange}
-          options={statusOptions.map((option) => ({ value: option, label: option }))}
         />
         <FilterSelect
           label="Access Model"
