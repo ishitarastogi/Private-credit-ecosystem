@@ -97,6 +97,30 @@ export const caseStudies: CaseStudy[] = [
       { question: "What happens in default?", answer: "If an expected receivable doesn't settle, the financed advance becomes a direct credit loss on that specific flow — recovery depends on the underlying payer, not a long workout process." },
     ],
   },
+  {
+    slug: "fasanara",
+    name: "Fasanara",
+    summary:
+      "Fasanara originates credit pools such as mF-ONE and mGLOBAL, issued through Midas's tokenization infrastructure — a clean example of separating the originator from the tokenization platform.",
+    concepts: [
+      "Originator vs tokenization platform",
+      "Permissionless credit pools",
+      "Onchain mcap vs active mcap",
+      "DeFi utilization",
+    ],
+    answers: [
+      { question: "Who is the borrower?", answer: "Borrowers underlying Fasanara's private credit strategies — the specific credit exposures packaged into mF-ONE and mGLOBAL." },
+      { question: "What is the loan?", answer: "A credit pool structured by Fasanara — mF-ONE is classified as a Credit Pool asset in the project database, with mGLOBAL a related product issued via the same infrastructure." },
+      { question: "Who originates it?", answer: "Fasanara — it is classified as the Originator, not the tokenization platform, in the project database's Layer 1." },
+      { question: "Who owns the loan?", answer: "Fasanara's structure holds the underlying credit; Midas Software GmbH is recorded as the issuer of the tokenized wrapper around it." },
+      { question: "Where is the SPV?", answer: "The database records Midas Software GmbH as issuer for mF-ONE — the legal wrapper sits with the tokenization platform's issuance entity, separate from Fasanara's own origination role." },
+      { question: "What does the investor hold?", answer: "A permissionless credit pool token — mF-ONE (ticker MF-ONE) — accessible without gating, per its recorded access model." },
+      { question: "How are repayments distributed?", answer: "Value accrues to the pool token as underlying credit generates yield, consistent with a Credit Pool asset class structure." },
+      { question: "What protects investors?", answer: "The database notes a meaningful gap between mF-ONE's onchain market cap (~$64.4M) and its active market cap (~$34.9M) — a reminder to check what share of reported size is actually deployed versus idle." },
+      { question: "How liquid is the position?", answer: "The database records DeFi utilization of about 90% for mF-ONE, indicating most of the active pool is being actively used as DeFi collateral or liquidity rather than sitting idle." },
+      { question: "What happens in default?", answer: "Not separately disclosed in the database beyond the pool structure itself — this is exactly the kind of gap the 60-Second Credit Check is designed to surface before investing, not after." },
+    ],
+  },
 ];
 
 export const caseStudyBySlug = new Map(caseStudies.map((study) => [study.slug, study]));

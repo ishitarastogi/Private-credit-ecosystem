@@ -2,9 +2,9 @@ import type { Lesson } from "@/data/learn/types";
 
 export const howOnchainPrivateCreditWorks: Lesson = {
   slug: "how-onchain-private-credit-works",
-  moduleKey: "follow-the-money",
-  order: 1,
-  title: "How onchain private credit works",
+  moduleKey: "foundations",
+  order: 3,
+  title: "How the Onchain Credit Stack Works",
   summary: "Follow one dollar through the full loop, and meet every role along the way.",
   blocks: [
     {

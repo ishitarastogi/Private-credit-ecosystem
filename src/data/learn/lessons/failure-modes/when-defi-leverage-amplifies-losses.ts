@@ -1,16 +1,56 @@
 import type { Lesson } from "@/data/learn/types";
 
-export const howAnRwaCreditVaultBlowsUp: Lesson = {
-  slug: "how-an-rwa-credit-vault-blows-up",
-  moduleKey: "how-it-breaks",
-  order: 2,
-  title: "Anatomy of a vault blowup",
-  summary: "The flagship failure case — step through exactly how a credit vault unwinds.",
+export const whenDefiLeverageAmplifiesLosses: Lesson = {
+  slug: "when-defi-leverage-amplifies-losses",
+  moduleKey: "failure-modes",
+  order: 4,
+  title: "When DeFi leverage amplifies losses",
+  summary: "Leverage doesn't create the initial problem — it multiplies it. The flagship failure case, step by step.",
   blocks: [
     {
       type: "paragraph",
       lead: true,
-      text: "This is the scenario every earlier lesson in this section was building toward. Step through it stage by stage, and notice how every earlier concept — the claim chain, NAV vs liquidity, LLTV, leverage looping, legal claim failure — shows up here at once.",
+      text: "Leverage doesn't create the initial problem — it multiplies it. A NAV decline that would have been a minor markdown on an unlevered position becomes a cascade of forced liquidations across every looped position built on top of it.",
+    },
+    {
+      type: "flow-diagram",
+      orientation: "horizontal",
+      steps: [
+        { id: "token", label: "Credit token" },
+        { id: "borrow", label: "Borrow against token" },
+        { id: "buy", label: "Buy more token" },
+        { id: "repeat", label: "Repeat" },
+        { id: "decline", label: "Small NAV decline" },
+        { id: "cascade", label: "Large liquidation cascade" },
+      ],
+    },
+    {
+      type: "heading",
+      text: "The claim underneath it all",
+      level: 3,
+    },
+    {
+      type: "comparison",
+      title: "Two very different structures",
+      subjects: ["Weak structure", "Strong structure"],
+      rows: [
+        { attribute: "1", values: ["Investor → Token → Protocol", "Investor → Legal claim on SPV → Underlying loan → Borrower / collateral"] },
+        { attribute: "Enforceability", values: ["Investor's recourse may stop at the protocol's terms of service", "Investor's claim traces through a documented legal structure to the actual loan"] },
+      ],
+    },
+    {
+      type: "callout",
+      tone: "warning",
+      text: "These two structures can look identical from the outside — same token, same dashboard, same yield number. They are economically very different. Only one of them gives you an enforceable path to the borrower or collateral if something goes wrong. Leverage doesn't just amplify credit losses — it amplifies the consequences of having the weaker claim, exactly when it matters most.",
+    },
+    {
+      type: "heading",
+      text: "Anatomy of a vault blowup",
+      level: 3,
+    },
+    {
+      type: "paragraph",
+      text: "This is the flagship scenario for the whole Learn section. Step through it stage by stage, and notice how the claim chain, NAV vs liquidity, LLTV, leverage looping, and legal claim failure all show up at once.",
     },
     {
       type: "widget",
@@ -79,28 +119,24 @@ export const howAnRwaCreditVaultBlowsUp: Lesson = {
             label: "Cascade",
             detail: "Forced selling at a steep discount, other looped positions become undercollateralized in turn, and redemption requests spike against a vault whose underlying loans are illiquid by design.",
             zone: "offchain",
-            consequence: "The gap between NAV, market price, and realizable liquidation value — from Module 05 — is now the entire story.",
+            consequence: "The gap between NAV, market price, and realizable liquidation value is now the entire story.",
           },
         ],
       },
     },
     {
       type: "callout",
-      tone: "warning",
+      tone: "key-concept",
       title: "Every tokenized credit blowup ends the same way",
       text: "Someone tries to liquidate, and finds out the token wasn't a liquid claim on anything real — just a claim on an issuer's marked price, tested for the first time under stress.",
     },
     {
-      type: "paragraph",
-      text: "Notice that no single step here was exotic. Each one, on its own, is something covered elsewhere in this Learn section: a claim chain that stops at the issuer (Module 03), a NAV that lags reality (Module 04), leverage that amplifies a small decline (Module 05), and a liquidity mismatch between real-world recovery and DeFi liquidation speed (Module 05, Failure #4 above). The blowup is what happens when all of them are true of the same token at the same time.",
-    },
-    {
       type: "takeaways",
       items: [
-        "A vault blowup is rarely one dramatic failure — it's several ordinary risks (weak legal claim, lagging NAV, DeFi leverage, liquidity mismatch) compounding at once.",
-        "The moment of truth is almost always a liquidation: it's the first time anyone needs a real market price, not a marked one.",
-        "The two questions that matter most going in are the same ones from Module 03 and 06: who legally owes you money, and what is the collateral's real, testable price — not its marked one?",
-        "Every concept in this Learn section exists to help you spot these conditions before they compound, not just to recognize them after the fact.",
+        "Leverage multiplies the consequences of a credit problem — a small NAV decline becomes a large liquidation cascade across looped positions.",
+        "A weak legal claim (investor → token → protocol) and a strong one (investor → legal claim on SPV → loan) can look identical until the moment of liquidation, when the difference becomes everything.",
+        "A vault blowup is rarely one dramatic failure — it's several ordinary risks from earlier modules compounding at the same time.",
+        "The two questions that matter most going in: who legally owes you money, and what is the collateral's real, testable price — not its marked one?",
       ],
     },
   ],

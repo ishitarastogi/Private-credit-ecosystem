@@ -1,10 +1,10 @@
 import type { Lesson } from "@/data/learn/types";
 
-export const whatDoesYourTokenRepresent: Lesson = {
-  slug: "what-does-your-token-represent",
-  moduleKey: "what-do-i-own",
-  order: 1,
-  title: "What does your token actually represent?",
+export const fundVsPoolVsNoteVsVault: Lesson = {
+  slug: "fund-vs-pool-vs-note-vs-vault",
+  moduleKey: "credit-products",
+  order: 2,
+  title: "Fund vs Pool vs Note vs Vault",
   summary: "Seven instrument types look similar on a dashboard and mean very different things legally.",
   blocks: [
     {

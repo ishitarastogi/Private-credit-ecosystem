@@ -2,9 +2,9 @@ import type { Lesson } from "@/data/learn/types";
 
 export const whatIsOnchain: Lesson = {
   slug: "what-is-onchain",
-  moduleKey: "what-is-this",
+  moduleKey: "foundations",
   order: 2,
-  title: "What does \"onchain\" actually mean?",
+  title: "What is Onchain Private Credit?",
   summary: "Three very different levels hide behind the same word — and none of them guarantee liquidity.",
   blocks: [
     {

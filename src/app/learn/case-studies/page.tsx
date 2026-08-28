@@ -12,12 +12,12 @@ export default function CaseStudiesPage() {
           Case studies
         </h1>
         <p className="mt-3 text-sm leading-6 text-muted">
-          The same fixed ten questions, applied to four real products — to show how the
-          concepts from earlier modules actually show up in practice.
+          The same fixed ten questions, applied to {caseStudies.length} real products — to show
+          how the concepts from earlier modules actually show up in practice.
         </p>
       </header>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {caseStudies.map((study) => (
           <CaseStudyCard key={study.slug} caseStudy={study} />
         ))}

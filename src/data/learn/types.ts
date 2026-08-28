@@ -75,6 +75,7 @@ export interface WidgetConfigMap {
   "waterfall-simulator": {
     poolUsd: number;
     seniorUsd: number;
+    mezzanineUsd?: number;
     juniorUsd: number;
     defaultLossUsd: number;
     maxLossUsd: number;

@@ -1,10 +1,10 @@
 import type { Lesson } from "@/data/learn/types";
 
-export const understandingCreditRisk: Lesson = {
-  slug: "understanding-credit-risk",
-  moduleKey: "where-is-the-risk",
+export const whereDoesTheRiskSit: Lesson = {
+  slug: "where-does-the-risk-sit",
+  moduleKey: "risk",
   order: 1,
-  title: "Understanding credit risk",
+  title: "Where does the risk sit?",
   summary: "Private credit yield exists because private credit carries risk — nine kinds, each taught by a scenario.",
   blocks: [
     {
@@ -30,7 +30,7 @@ export const understandingCreditRisk: Lesson = {
         "The borrower defaults, and the lender moves to seize the inventory.",
         "Half of it turns out to be obsolete or damaged — worth far less than assumed.",
       ],
-      lesson: "Collateral risk is the risk that the asset backing a loan is worth less than expected when you actually need it.",
+      lesson: "Collateral risk is the risk that the asset backing a loan is worth less than expected when you actually need it — covered in depth in the next lesson.",
     },
     {
       type: "scenario",
@@ -40,7 +40,7 @@ export const understandingCreditRisk: Lesson = {
         "The investor needs cash and requests a redemption.",
         "The fund only processes redemptions quarterly, and the current queue is backed up.",
       ],
-      lesson: "Liquidity risk is the risk that you can't convert your position to cash when you want to, regardless of whether the underlying loans are healthy.",
+      lesson: "Liquidity risk is the risk that you can't convert your position to cash when you want to, regardless of whether the underlying loans are healthy — covered in the Liquidity & Redemption lesson.",
     },
     {
       type: "scenario",
@@ -50,7 +50,7 @@ export const understandingCreditRisk: Lesson = {
         "A loan quietly becomes impaired, but the next NAV update isn't due for three weeks.",
         "Investors keep buying in at a NAV that doesn't yet reflect the bad news.",
       ],
-      lesson: "Valuation risk is the risk that the reported value lags the real value — you can be transacting at a stale price.",
+      lesson: "Valuation risk is the risk that the reported value lags the real value — covered in the NAV vs Fair Value lesson.",
     },
     {
       type: "scenario",
@@ -70,7 +70,7 @@ export const understandingCreditRisk: Lesson = {
         "The borrower is in a jurisdiction where the SPV's security interest is hard to enforce.",
         "Recovery takes years and costs more in legal fees than expected.",
       ],
-      lesson: "Legal risk is the risk that even a valid claim is slow, expensive, or impossible to actually enforce.",
+      lesson: "Legal risk is the risk that even a valid claim is slow, expensive, or impossible to actually enforce — see Defaults & Recoveries.",
     },
     {
       type: "scenario",
@@ -100,83 +100,14 @@ export const understandingCreditRisk: Lesson = {
         "Borrowers use it to take out leveraged positions against it.",
         "A NAV markdown that would have been a minor event on its own now triggers automated liquidations.",
       ],
-      lesson: "Once a credit token becomes DeFi collateral, its risk is no longer just its own — it inherits the speed and mechanics of DeFi liquidations. This is covered in full in Module 05.",
-    },
-    {
-      type: "heading",
-      text: "Senior vs junior",
-      level: 3,
-    },
-    {
-      type: "paragraph",
-      text: "Structured pools split repayments into tranches with different priority. Senior capital gets paid first and absorbs losses last; junior capital gets paid last and absorbs losses first. Try it below.",
-    },
-    {
-      type: "widget",
-      widget: "waterfall-simulator",
-      title: "Senior vs junior — the loss waterfall",
-      description: "Move the loss slider and watch who absorbs it first.",
-      config: {
-        poolUsd: 100_000_000,
-        seniorUsd: 70_000_000,
-        juniorUsd: 30_000_000,
-        defaultLossUsd: 10_000_000,
-        maxLossUsd: 100_000_000,
-      },
-    },
-    {
-      type: "callout",
-      tone: "key-concept",
-      text: "Junior capital provides first-loss protection to senior capital. That's why junior tranches earn a higher yield — they're compensated for absorbing losses before anyone else does.",
-    },
-    {
-      type: "heading",
-      text: "Collateral",
-      level: 3,
-    },
-    {
-      type: "paragraph",
-      text: "Collateral is an asset pledged to secure a loan. Overcollateralization means the collateral is worth more than the loan — a buffer against the collateral losing value or being sold at a discount (a haircut) during recovery. The ratio of loan to collateral is the LTV — loan-to-value.",
-    },
-    {
-      type: "widget",
-      widget: "collateral-ltv-slider",
-      title: "Collateral and LTV",
-      description: "Change the loan amount and watch the LTV change.",
-      config: {
-        collateralUsd: 100,
-        initialLoanUsd: 70,
-        maxLoanUsd: 100,
-      },
-    },
-    {
-      type: "paragraph",
-      text: "Lower LTV means more cushion before the collateral's value drops below the loan amount. Collateral quality matters just as much as the ratio — a 70% LTV against volatile or illiquid collateral is riskier than a 70% LTV against stable, liquid collateral.",
+      lesson: "Once a credit token becomes DeFi collateral, its risk is no longer just its own — it inherits the speed and mechanics of DeFi liquidations. This is the whole subject of Module 05.",
     },
     {
       type: "takeaways",
       items: [
         "Private credit yield compensates for real risk — credit, collateral, liquidity, valuation, counterparty, legal, concentration, servicing, and DeFi composability risk.",
-        "Junior tranches absorb losses first, protecting senior capital — that's why they earn more.",
-        "Overcollateralization and low LTV create a buffer, but only if the collateral itself is high quality and liquid.",
         "A single risk category rarely explains a failure — most real losses are a combination of two or more of these.",
-      ],
-    },
-    {
-      type: "quiz",
-      questions: [
-        {
-          id: "q1",
-          question: "In a $100M pool with a $70M senior and $30M junior tranche, what happens to senior capital on a $10M loss?",
-          options: ["Senior absorbs the full $10M loss", "Senior is unaffected — junior absorbs the loss first", "Both split the loss equally", "The pool is liquidated"],
-          correctIndex: 1,
-        },
-        {
-          id: "q2",
-          question: "A pool advertises 50 borrowers but 60% of exposure sits in 3 of them. Which risk does this describe?",
-          options: ["Liquidity risk", "Concentration risk", "Counterparty risk", "Legal risk"],
-          correctIndex: 1,
-        },
+        "The rest of this module goes deeper on collateral, valuation, liquidity, and defaults; Module 05 covers DeFi composability risk in full.",
       ],
     },
   ],

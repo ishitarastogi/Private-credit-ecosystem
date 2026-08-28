@@ -2,7 +2,7 @@ import type { Lesson } from "@/data/learn/types";
 
 export const whatIsPrivateCredit: Lesson = {
   slug: "what-is-private-credit",
-  moduleKey: "what-is-this",
+  moduleKey: "foundations",
   order: 1,
   title: "What is private credit?",
   summary: "Non-bank lending, why it exists, and who actually borrows this way.",

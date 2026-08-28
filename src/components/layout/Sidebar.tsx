@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const navSections = [
+const topNavSections = [
   {
     label: "Explore",
     items: [{ href: "/ecosystem", label: "Ecosystem", icon: "◉" }],
@@ -12,14 +12,32 @@ const navSections = [
     label: "Data",
     items: [{ href: "/database", label: "Database", icon: "▣" }],
   },
-  {
-    label: "Learn",
-    items: [{ href: "/learn", label: "Learn", icon: "▤" }],
-  },
+];
+
+const learnItems = [
+  { href: "/learn#foundations", label: "Foundations" },
+  { href: "/learn/credit-structure", label: "Credit Structure" },
+  { href: "/learn#credit-products", label: "Credit Products" },
+  { href: "/learn#risk", label: "Risk" },
+  { href: "/learn#credit-defi", label: "Credit × DeFi" },
+  { href: "/learn#analyze", label: "Analyze" },
+  { href: "/learn/case-studies", label: "Case Studies" },
+  { href: "/learn#failure-modes", label: "Failure Modes" },
+];
+
+const referenceItems = [
+  { href: "/learn/glossary", label: "Glossary" },
+  { href: "/learn/resources", label: "Resources" },
+];
+
+const mobileNavItems = [
+  { href: "/ecosystem", label: "Ecosystem" },
+  { href: "/database", label: "Database" },
+  { href: "/learn", label: "Learn" },
 ];
 
 function isActive(pathname: string | null, href: string) {
-  if (!pathname) return false;
+  if (!pathname || href.includes("#")) return false;
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
@@ -44,8 +62,8 @@ export function Sidebar() {
         <div className="border-t border-line" />
 
         <nav aria-label="Primary" className="flex-1 overflow-y-auto px-3 py-5">
-          {navSections.map((section) => (
-            <div key={section.label} className="mb-6 last:mb-0">
+          {topNavSections.map((section) => (
+            <div key={section.label} className="mb-6">
               <p className="px-2.5 pb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
                 {section.label}
               </p>
@@ -73,6 +91,56 @@ export function Sidebar() {
               </div>
             </div>
           ))}
+
+          <div className="mb-6">
+            <p className="px-2.5 pb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+              Learn
+            </p>
+            <div className="space-y-0.5">
+              {learnItems.map((item) => {
+                const active = isActive(pathname, item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`block rounded-md px-2.5 py-1.5 text-xs transition-colors ${
+                      active
+                        ? "bg-foreground/[0.06] font-medium text-foreground"
+                        : "text-muted hover:text-foreground"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mb-6 last:mb-0">
+            <p className="px-2.5 pb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-zinc-400">
+              Reference
+            </p>
+            <div className="space-y-0.5">
+              {referenceItems.map((item) => {
+                const active = isActive(pathname, item.href);
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`block rounded-md px-2.5 py-1.5 text-xs transition-colors ${
+                      active
+                        ? "bg-foreground/[0.06] font-medium text-foreground"
+                        : "text-muted hover:text-foreground"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         </nav>
       </aside>
 
@@ -84,7 +152,7 @@ export function Sidebar() {
           Private Credit<span className="text-accent">.Map</span>
         </Link>
         <nav aria-label="Primary" className="flex items-center gap-1">
-          {navSections.flatMap((section) => section.items).map((item) => {
+          {mobileNavItems.map((item) => {
             const active = isActive(pathname, item.href);
             return (
               <Link

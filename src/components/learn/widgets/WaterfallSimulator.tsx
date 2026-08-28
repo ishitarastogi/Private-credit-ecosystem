@@ -17,6 +17,7 @@ import { formatUsd } from "@/lib/utils";
 type WaterfallSimulatorProps = {
   poolUsd: number;
   seniorUsd: number;
+  mezzanineUsd?: number;
   juniorUsd: number;
   defaultLossUsd: number;
   maxLossUsd: number;
@@ -25,19 +26,32 @@ type WaterfallSimulatorProps = {
 export function WaterfallSimulator({
   poolUsd,
   seniorUsd,
+  mezzanineUsd,
   juniorUsd,
   defaultLossUsd,
   maxLossUsd,
 }: WaterfallSimulatorProps) {
   const [loss, setLoss] = useState(defaultLossUsd);
+  const hasMezzanine = mezzanineUsd !== undefined && mezzanineUsd > 0;
 
+  // Loss absorption order: junior first, then mezzanine (if present), then senior last.
   const juniorLoss = Math.min(loss, juniorUsd);
-  const seniorLoss = Math.max(0, loss - juniorUsd);
+  const remainingAfterJunior = Math.max(0, loss - juniorUsd);
+  const mezzanineLoss = hasMezzanine ? Math.min(remainingAfterJunior, mezzanineUsd) : 0;
+  const remainingAfterMezzanine = hasMezzanine
+    ? Math.max(0, remainingAfterJunior - mezzanineUsd)
+    : remainingAfterJunior;
+  const seniorLoss = Math.min(remainingAfterMezzanine, seniorUsd);
+
   const juniorRemaining = juniorUsd - juniorLoss;
-  const seniorRemaining = seniorUsd - Math.min(seniorLoss, seniorUsd);
+  const mezzanineRemaining = hasMezzanine ? mezzanineUsd - mezzanineLoss : 0;
+  const seniorRemaining = seniorUsd - seniorLoss;
 
   const data = [
     { name: "Senior", remaining: seniorRemaining, lost: seniorUsd - seniorRemaining },
+    ...(hasMezzanine
+      ? [{ name: "Mezzanine", remaining: mezzanineRemaining, lost: mezzanineUsd - mezzanineRemaining }]
+      : []),
     { name: "Junior", remaining: juniorRemaining, lost: juniorUsd - juniorRemaining },
   ];
 
@@ -50,6 +64,11 @@ export function WaterfallSimulator({
         <span>
           Senior <span className="font-medium text-foreground">{formatUsd(seniorUsd)}</span>
         </span>
+        {hasMezzanine && (
+          <span>
+            Mezzanine <span className="font-medium text-foreground">{formatUsd(mezzanineUsd)}</span>
+          </span>
+        )}
         <span>
           Junior <span className="font-medium text-foreground">{formatUsd(juniorUsd)}</span>
         </span>
